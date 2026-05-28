@@ -1,0 +1,65 @@
+import os
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.prompts import ChatPromptTemplate
+
+# Set your API Key
+os.environ["GOOGLE_API_KEY"] = "AIzaSyB2psGoWr5zav_wsUz8cqsSvNDrL0_ioJ0"
+
+# --- THE 6 EXPERT PROCEDURAL TOOLS ---
+def task_breakdown_tool(task_description: str) -> str:
+    return "[TOOL]: Break down task into 1 tiny step."
+
+def focus_timer_tool(duration_minutes: int) -> str:
+    return "[TOOL]: Start 10-minute focus block."
+
+def reminder_tool(routine_name: str) -> str:
+    return "[TOOL]: Queue routine reminders."
+
+def motivation_tool(achievement: str) -> str:
+    return "[TOOL]: Deliver positive praise."
+
+def emotional_support_tool(distress_type: str) -> str:
+    return "[TOOL]: Activate 5-4-3-2-1 Grounding Framework."
+
+def environment_check_tool(distractions: list) -> str:
+    return "[TOOL]: Instruct user to remove environmental barriers."
+
+# --- SYSTEM PROMPT RULES ---
+system_prompt = """
+You are an ADHD Support Assistant. Follow these rules:
+1. Use a calm, supportive, non-blaming tone.
+2. If the user is stuck on a task, use Task Breakdown Tool for one step.
+3. If distracted, use Focus Timer Tool.
+4. If distressed/crying, use Emotional Support Tool.
+5. If sensory distractions are mentioned, use Environment Check Tool.
+6. Never diagnose or give medication advice. Direct to a trusted adult if asked.
+
+Show your thought process using this structure:
+> Entering new AgentExecutor chain...
+Thought: (Your reasoning)
+Action: (Tool name)
+Final Answer: (Response to user)
+"""
+
+prompt_template = ChatPromptTemplate.from_messages([
+    ("system", system_prompt),
+    ("human", "{input}")
+])
+
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
+agent_pipeline = prompt_template | llm
+
+# --- INTERACTIVE TESTING LOOP ---
+print("--- ADHD ASSISTANT LIVE INTERACTIVE TEST ---")
+print("Type 'quit' to stop the test.\n")
+
+while True:
+    user_message = input("You (type a child's problem): ")
+    if user_message.lower() == 'quit':
+        print("Testing stopped.")
+        break
+        
+    print("\n--- AI IS THINKING ---")
+    response = agent_pipeline.invoke({"input": user_message})
+    print(response.content)
+    print("-" * 50)
