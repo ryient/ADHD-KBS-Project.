@@ -6,7 +6,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 
 # 2. Set your API Key
-os.environ["GOOGLE_API_KEY"] = 
+os.environ["GOOGLE_API_KEY"] = "YOUR_API_KEY_HERE"
 
 # --- THE 6 EXPERT PROCEDURAL TOOLS ---
 def task_breakdown_tool(task_description: str) -> str:
