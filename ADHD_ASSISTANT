@@ -1,8 +1,11 @@
+# 1. RUN THIS FIRST to download the missing packages to Google's server
+!pip install -q langchain-google-genai langchain-core
+
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 
-# Set your API Key
+# 2. Set your API Key
 os.environ["GOOGLE_API_KEY"] = "AIzaSyB2psGoWr5zav_wsUz8cqsSvNDrL0_ioJ0"
 
 # --- THE 6 EXPERT PROCEDURAL TOOLS ---
