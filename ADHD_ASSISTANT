@@ -1,11 +1,11 @@
-# 1. RUN THIS FIRST to download the missing packages to Google's server
-!pip install -q langchain-google-genai langchain-core
+# --- FOR GOOGLE COLAB USERS: UNCOMMENT THE LINE BELOW TO INSTALL PACKAGES ---
+# !pip install -q langchain-google-genai langchain-core
 
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 
-# 2. Set your API Key
+# Set your API Key (Replace with your actual key)
 os.environ["GOOGLE_API_KEY"] = "YOUR_API_KEY_HERE"
 
 # --- THE 6 EXPERT PROCEDURAL TOOLS ---
@@ -49,7 +49,8 @@ prompt_template = ChatPromptTemplate.from_messages([
     ("human", "{input}")
 ])
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
+# This setting makes the code compatible with both local machines (VS Code) and Cloud (Colab)
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0, convert_system_message_to_human=True)
 agent_pipeline = prompt_template | llm
 
 # --- INTERACTIVE TESTING LOOP ---
